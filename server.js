@@ -20,14 +20,15 @@ const Message = require("./message");
 //5: add the connection code:
 const mongoose = require("mongoose");
 
-if (process.argv.length < 3) {
-  console.log(
-    "Please provide the password as an argument: node mongo.js <password>"
-  );
-  process.exit(1);
-}
+// if (process.argv.length < 3) {
+//   console.log(
+//     "Please provide the password as an argument: node mongo.js <password>"
+//   );
+//   process.exit(1);
+// }
 
-const password = process.argv[2];
+// const password = process.argv[2];
+const password = `the_egg`;
 
 //good idea to put in the password when running from the terminal (for testing and PLEASE do not share :: (mine is XML2asp))
 //database name is myFirstDatabase (creates)
@@ -47,7 +48,10 @@ Node set up
 *****************************************/
 
 let express = require("express");
-const portNumber = 3000;
+// // port number if we want to do tests:
+// const portNumber = 3000;
+// Heroku's port number
+const portNumber = process.env.PORT || 5000;
 let app = express(); //make an insatnce of express
 let httpServer = require("http").createServer(app);
 // create a server (using the Express framework object)

@@ -198,7 +198,10 @@ function setup() {
   // now delete user data from local storage
   localStorage.removeItem(`user`);
 
-  clientSocket = io.connect("http://localhost:3000");
+  clientSocket = io();
+
+  // // FOR TESTS, UNCOMMENT THIS;
+  // clientSocket = io.connect("http://localhost:3000");
 
   clientSocket.on("connect", function (data) {
     console.log("connected");
