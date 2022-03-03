@@ -1,0 +1,62 @@
+/*********************************************
+
+Here is a description of any special CSS used.
+By default that's nothing.
+
+**********************************************/
+
+/* typefaces */
+@import url("https://fonts.googleapis.com/css2?family=Gluten:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap");
+
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  font-family: ;
+}
+
+body {
+  margin: auto;
+  height: 100vh;
+
+  background-color: #08747b;
+
+  /* Image source:  Photo by Nahil Naseer on Unsplash
+https://unsplash.com/photos/xljtGZ2-P3Y
+*/
+  background-image: url("../assets/images/welcome/leaves-background2.jpg");
+  background-repeat: no-repeat;
+  background-size: 100%;
+  /* background-blend-mode: overlay; */
+
+  /* background-color: rgb(8, 116, 123, 1); */
+  font-family: "Quicksand", sans-serif;
+  color: white;
+}
+
+/* on log in, hide the canvas */
+#defaultCanvas0 {
+  /* display: none; */
+}
+
+/* unvisited link */
+a:link {
+  color: rgb(45, 227, 240);
+  font-family: "Quicksand", sans-serif;
+  text-decoration: none;
+}
+
+/* visited link */
+a:visited {
+  color: rgb(45, 227, 240);
+  font-family: "Quicksand", sans-serif;
+  text-decoration: none;
+}
+
+/* mouse over link */
+a:hover {
+  /* text-decoration: underline; */
+  /* font-weight: bold; */
+  color: white;
+}

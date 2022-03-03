@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      width="device-width,"
+      initial-scale="1.0,"
+      maximum-scale="1.0,"
+      user-scalable="0"
+    />
+
+    <title>Star Sprout</title>
+
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="../assets/images/icons/favicon_blue.png"
+    />
+
+    <!-- CSS stylesheets -->
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/welcomeScreen.css" />
+    <link rel="stylesheet" type="text/css" href="css/modal.css" />
+    <!-- Library scripts -->
+    <script src="js/libraries/p5.min.js"></script>
+    <script src="js/libraries/p5.sound.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/clientPost.js"></script>
+  </head>
+
+  <body>
+    <div id="content">
+      <h1 id="welcome">Welcome to</h1>
+      <h1 id="title">Star Sprout</h1>
+
+      <!-- LOGIN FORM -->
+      <div id="form-wrapper" class="form">
+        <div id="container">
+          <form id="form_login" action="">
+            <p>
+              <input
+                id="username"
+                type="text"
+                value=""
+                placeholder="username"
+                name="username"
+                class="inputUsername"
+              />
+            </p>
+            <p>
+              <input
+                id="password"
+                type="password"
+                value=""
+                placeholder="password"
+                name="password"
+                class="inputUsername"
+              />
+            </p>
+            <p>
+              <input id="loginBtn" id="login" type="submit" value="LOGIN" />
+            </p>
+          </form>
+
+          <p id="mess"></p>
+        </div>
+
+        <a id="firstTime" href="newUser.html"
+          >This is my first time visiting!</a
+        >
+      </div>
+
+      <div>
+        <!-- fake button to be replaced to validate username input -->
+        <!-- <a href="greenhouses.html">
+          <img
+            id="loginBtn"
+            alt="login"
+            src="assets/images/welcome/leaf-arrow.png"
+          />
+        </a> -->
+      </div>
+    </div>
+
+    <!-- My script(s) -->
+    <script src="js/startConnection.js" class="isHidden"></script>
+  </body>
+</html>

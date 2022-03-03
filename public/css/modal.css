@@ -1,0 +1,128 @@
+/* Modal window */
+/* https://www.w3schools.com/howto/howto_css_modals.asp */
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+.form_content {
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 25px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid white;
+  width: 80%;
+  max-width: 1300px;
+}
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 40px;
+  font-weight: bold;
+  margin-right: 2%;
+}
+
+.close:hover,
+.close:focus {
+  /* light blue */
+  color: #73e7f0;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.form_content h2 {
+  margin: 2%;
+  font-size: 2rem;
+}
+
+#sendTo,
+#messageBox {
+  margin: 2%;
+}
+
+#sendTo input {
+  width: 30%;
+}
+
+#messageBox textarea {
+  margin-top: 10px;
+  font-family: "Quicksand", sans-serif;
+  width: 100%;
+  font-size: 1.5rem;
+  padding: 1%;
+}
+
+#messageBox label {
+  font-size: 1.2em;
+  margin-bottom: 50px;
+}
+
+.submitBtn {
+  padding: 1%;
+  color: white;
+  border-radius: 10px;
+  border: white solid 1px;
+  font-size: 1.2em;
+  margin-top: 2%;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.submitBtn:hover {
+  cursor: pointer;
+  background-color: #08747b;
+  border: black solid 1px;
+}
+
+.sr-only {
+  /* clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px; */
+
+  position: fixed;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* input[type="radio" i] {
+  appearance: none;
+} */
+
+input[type="radio" i]:hover {
+  cursor: pointer;
+}
+
+.seedOptions {
+  margin: 5%;
+}
+.seedOptions img {
+  /* cursor: pointer; */
+  filter: grayscale(100%);
+}
+
+/* .seedOptions img:hover {
+  filter: grayscale(0);
+} */
+
+.seedOptions input[type="radio"]:checked + img {
+  filter: grayscale(0);
+  /* appearance: none; */
+}
+
+.messageBody p {
+  margin: 2%;
+}

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      width="device-width,"
+      initial-scale="1.0,"
+      maximum-scale="1.0,"
+      user-scalable="0"
+    />
+
+    <title>Star Sprout</title>
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="../assets/images/icons/favicon_blue.png"
+    />
+
+    <!-- CSS stylesheets -->
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/welcomeScreen.css" />
+    <link rel="stylesheet" type="text/css" href="css/modal.css" />
+    <!-- Library scripts -->
+    <script src="js/libraries/p5.min.js"></script>
+    <script src="js/libraries/p5.sound.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/clientPost.js"></script>
+  </head>
+
+  <body>
+    <div id="MessagingForm" class="modal">
+      <div class="form_content">
+        <span id="closeMessageForm" class="close">&times;</span>
+        <h2 id="messageFormHeader">Send a message</h2>
+
+        <form id="messageForm" action="">
+          <section class="messageBody">
+            <p id="messageBox">
+              <label> Message : </label>
+              <textarea
+                name="message"
+                id="messageContainer"
+                form="messageForm"
+                rows="6"
+                placeholder="Type message here"
+                required
+              ></textarea>
+
+              <!-- <input
+                id="messageContainer"
+                type="text"
+                name="message"
+                required
+              /> -->
+            </p>
+
+            <p>
+              <input
+                type="submit"
+                name="submit"
+                value="Submit"
+                id="submitMsg"
+                class="submitBtn"
+              />
+            </p>
+          </section>
+        </form>
+      </div>
+    </div>
+
+    <!-- Seed form -->
+
+    <div id="SeedForm" class="modal">
+      <div class="form_content">
+        <span id="closeSeedForm" class="close">&times;</span>
+        <h2>Choose a seed</h2>
+
+        <section class="seedOptions">
+          <form id="selectSeed" action="">
+            <input type="radio" name="seed" id="cactusSeed" value="cactus" />
+            <img src="assets/images/plants/cactus0.png" alt="seed1" />
+
+            <input type="radio" name="seed" id="cherrySeed" value="cherry" />
+            <img src="assets/images/plants/cherry0.png" alt="seed2" />
+
+            <input type="radio" name="seed" id="dragonSeed" value="dragon" />
+            <img src="assets/images/plants/dragon0.png" alt="seed1" />
+
+            <!-- submit button -->
+            <p>
+              <input
+                type="submit"
+                name="submit"
+                value="Submit"
+                id="submitSeedChoice"
+                class="submitBtn"
+              />
+            </p>
+          </form>
+        </section>
+      </div>
+    </div>
+
+    <!-- Receive message modal window -->
+
+    <div id="receivedMessageForm" class="modal">
+      <div class="form_content">
+        <span id="closeReceivedMessageForm" class="close">&times;</span>
+        <h2>Message received</h2>
+
+        <section id="messageBody" class="messageBody">
+          <h2 id="senderName">Sent by :</h2>
+          <p id="messageReceived">
+            message goes here <br />
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet
+            quis laboriosam odit suscipit sed, dolores mollitia distinctio,
+            dolor similique, doloremque rerum. Accusamus quis cum natus velit,
+            beatae dolorem tempora cupiditate!
+          </p>
+        </section>
+      </div>
+    </div>
+    <!-- My scripts -->
+    <section id="scripts">
+      <script src="js/Classes/RectangleTransition.js"></script>
+      <script src="js/Classes/Greenhouse.js"></script>
+      <script src="js/Classes/Star.js"></script>
+      <script src="js/Classes/Plant.js"></script>
+      <script src="js/Classes/Icon.js"></script>
+      <script src="js/Classes/HomeIcon.js"></script>
+      <script src="js/Classes/SeedIcon.js"></script>
+      <script src="js/script.js"></script>
+    </section>
+  </body>
+</html>
