@@ -48,8 +48,10 @@ Node set up
 *****************************************/
 
 let express = require("express");
-// // port number if we want to do tests:
+// // port number, uncomment if we want to do tests:
 // const portNumber = 3000;
+
+// // UNCOMMENT IF WANT ACTUAL WEBSITE:
 // Heroku's port number
 const portNumber = process.env.PORT || 5000;
 let app = express(); //make an insatnce of express
@@ -67,10 +69,10 @@ let clientIds = [];
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
-//default route
-app.get("/", function (req, res) {
-  res.send("<h1>Hello world</h1>");
-});
+// //default route
+// app.get("/", function (req, res) {
+//   res.send("<h1>Hello world</h1>");
+// });
 
 // new when user posts data register
 
@@ -185,6 +187,9 @@ function newConnection(socket) {
 
           resultUser.save().then((result) => {
             console.log("done");
+
+            // indicates saving is done
+            socket.emit("addedGreenhouseForNewUser", result);
           });
         });
       });

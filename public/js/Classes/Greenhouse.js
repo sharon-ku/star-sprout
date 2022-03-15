@@ -103,7 +103,7 @@ class Greenhouse {
       });
 
       // Request the user greenhouse positions to be found
-      clientSocket.emit("getUserPodPositions");
+      // clientSocket.emit("getUserPodPositions");
 
       // change tint color to magenta
       this.setUserPodTint();

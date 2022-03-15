@@ -192,205 +192,216 @@ function setup() {
   bkg.position(0, 0);
   bkg.style("z-index", -1);
 
-  // grab user data from local storage and store it in userInfo variable
-  userInfo = JSON.parse(localStorage.getItem(`user`))[0];
-  console.log(userInfo);
-  // now delete user data from local storage
-  localStorage.removeItem(`user`);
+  // If you come to greenhouse page but user did not come from correct route, go back to login page
+  if (localStorage.getItem("user") === null) {
+    window.location = "index.html";
+  } else {
+    // grab user data from local storage and store it in userInfo variable
+    userInfo = JSON.parse(localStorage.getItem(`user`))[0];
+    console.log(userInfo);
+    // now delete user data from local storage
+    localStorage.removeItem(`user`);
 
-  clientSocket = io();
+    // FOR WORKING WEBSITE, UNCOMMENT THIS:
+    clientSocket = io();
 
-  // // FOR TESTS, UNCOMMENT THIS;
-  // clientSocket = io.connect("http://localhost:3000");
+    // // FOR TESTS, UNCOMMENT THIS;
+    // clientSocket = io.connect("http://localhost:3000");
 
-  clientSocket.on("connect", function (data) {
-    console.log("connected");
-    // put code here that should only execute once the client is connected
-    /*********************************************************************************************/
-    // NEW:: pass the userID from db so server can CONNECT the userID and socket id together ... */
-    /********************************************************************************************/
-    clientSocket.emit("join", userInfo);
-    // handler for receiving client id
-    clientSocket.on("joinedClientId", function (data) {
-      // socketId = data;
-      // console.log("myId " + socketId);
-      console.log(data);
+    clientSocket.on("connect", function (data) {
+      console.log("connected");
+      // put code here that should only execute once the client is connected
+      /*********************************************************************************************/
+      // NEW:: pass the userID from db so server can CONNECT the userID and socket id together ... */
+      /********************************************************************************************/
+      clientSocket.emit("join", userInfo);
+      // handler for receiving client id
+      clientSocket.on("joinedClientId", function (data) {
+        // socketId = data;
+        // console.log("myId " + socketId);
+        console.log(data);
 
-      clientSocket.emit("requestGreenhouses");
+        clientSocket.emit("requestGreenhouses");
 
-      // only start draw once running is true
-      running = true;
+        // only start draw once running is true
+        running = true;
+      });
     });
-  });
 
-  // display greenhouses from database
-  clientSocket.on("newGreenhouses", function (results) {
-    // create pods
-    for (let i = 0; i < results.length; i++) {
-      // keep some distance from borders
+    // display greenhouses from database
+    clientSocket.on("newGreenhouses", function (results) {
+      // create pods
+      for (let i = 0; i < results.length; i++) {
+        // keep some distance from borders
 
-      let x = results[i].x;
-      let y = results[i].y;
-      let image = random(podImages);
-      let taken = results[i].taken;
+        let x = results[i].x;
+        let y = results[i].y;
+        let image = random(podImages);
+        let taken = results[i].taken;
 
-      // resize canvas to windowWidth and windowHeight
-      let pod = new Greenhouse(x, y, image, windowWidth, windowHeight, taken);
-      pods.push(pod);
+        // resize canvas to windowWidth and windowHeight
+        let pod = new Greenhouse(x, y, image, windowWidth, windowHeight, taken);
+        pods.push(pod);
+      }
 
       // Request the user greenhouse positions to be found
       clientSocket.emit("getUserPodPositions");
-    }
-  });
+    });
 
-  // Once the user's pod has been found, change its tint
-  clientSocket.on("foundUserGreenhousePositions", function (result) {
-    userPodX = result.x;
-    userPodY = result.y;
+    // Once the user's pod has been found, change its tint
+    clientSocket.on("foundUserGreenhousePositions", function (result) {
+      userPodX = result.x;
+      userPodY = result.y;
 
-    console.log(`user pod positions: ${userPodX}, ${userPodY}`);
+      console.log(`user pod positions: ${userPodX}, ${userPodY}`);
 
-    // change tint color of user greenhouse
-    for (let i = 0; i < pods.length; i++) {
-      let pod = pods[i];
+      // change tint color of user greenhouse
+      for (let i = 0; i < pods.length; i++) {
+        let pod = pods[i];
 
-      // if this is the user's greenhouse
-      if (pod.x === userPodX && pod.y === userPodY) {
-        pod.setUserPodTint();
-        // set pod's taken value to true
-        pod.taken = true;
+        // if this is the user's greenhouse
+        if (pod.x === userPodX && pod.y === userPodY) {
+          pod.setUserPodTint();
+          // set pod's taken value to true
+          pod.taken = true;
+        }
       }
+    });
+
+    // get visiting pod coordinates
+    clientSocket.on("foundPodVisited", function (result) {
+      visitPodData.x = result.x;
+      visitPodData.y = result.y;
+    });
+
+    // create icons
+    let iconSize = windowWidth / 15;
+    let homeIconSize = iconSize - 20;
+
+    let iconX_R = windowWidth * 0.01;
+
+    // add home icon
+    homeIcon = new HomeIcon(
+      iconX_R,
+      iconX_R,
+      homeIconImg,
+      homeIconSize,
+      canvasWidth,
+      canvasWidth
+    );
+
+    let iconX_L = windowWidth - iconSize * 1.1 - 30;
+    let iconY_L = windowHeight * 0.02;
+
+    let seedIcon_Y = iconX_R + iconSize * 1.4;
+    seedIcon = new SeedIcon(
+      iconX_L,
+      iconY_L,
+      seedIconImg,
+      iconSize,
+      visitGarden.length
+    );
+
+    // Create sparkling stars!
+    for (let i = 0; i < NUM_STARS; i++) {
+      let star = new Star();
+      stars.push(star);
     }
-  });
 
-  // get visiting pod coordinates
-  clientSocket.on("foundPodVisited", function (result) {
-    visitPodData.x = result.x;
-    visitPodData.y = result.y;
-  });
+    // Create rectangle transition
+    rectangleTransition = new RectangleTransition();
 
-  // create icons
-  let iconSize = windowWidth / 15;
-  let homeIconSize = iconSize - 20;
+    // Get pod positions again ONLY once the pod was added for the new user
+    clientSocket.on("addedGreenhouseForNewUser", function (result) {
+      clientSocket.emit("getUserPodPositions");
+    });
 
-  let iconX_R = windowWidth * 0.01;
-
-  // add home icon
-  homeIcon = new HomeIcon(
-    iconX_R,
-    iconX_R,
-    homeIconImg,
-    homeIconSize,
-    canvasWidth,
-    canvasWidth
-  );
-
-  let iconX_L = windowWidth - iconSize * 1.1 - 30;
-  let iconY_L = windowHeight * 0.02;
-
-  let seedIcon_Y = iconX_R + iconSize * 1.4;
-  seedIcon = new SeedIcon(
-    iconX_L,
-    iconY_L,
-    seedIconImg,
-    iconSize,
-    visitGarden.length
-  );
-
-  // Create sparkling stars!
-  for (let i = 0; i < NUM_STARS; i++) {
-    let star = new Star();
-    stars.push(star);
-  }
-
-  // Create rectangle transition
-  rectangleTransition = new RectangleTransition();
-
-  // display greenhouses from database
-  clientSocket.on("spliceMessage", function (plantId) {
-    console.log(`splicing`);
-    // remove first message of that plant
-    for (let i = 0; i < visitGarden.length; i++) {
-      let plant = visitGarden[i];
-      console.log(`visitGarden` + visitGarden[i]);
-      console.log(`plant` + plant.id);
-      if (plant.id === plantId) {
-        console.log(`splice the first message`);
-        // splice the first message
-        plant.messages.splice(0, 1);
-        console.log(`plantmessages` + plant.messages);
+    // display greenhouses from database
+    clientSocket.on("spliceMessage", function (plantId) {
+      console.log(`splicing`);
+      // remove first message of that plant
+      for (let i = 0; i < visitGarden.length; i++) {
+        let plant = visitGarden[i];
+        console.log(`visitGarden` + visitGarden[i]);
+        console.log(`plant` + plant.id);
+        if (plant.id === plantId) {
+          console.log(`splice the first message`);
+          // splice the first message
+          plant.messages.splice(0, 1);
+          console.log(`plantmessages` + plant.messages);
+        }
       }
-    }
-  });
+    });
 
-  // display user visited from database
-  clientSocket.on("foundUserVisited", function (result) {
-    visitUserData = result;
-    console.log(`currently visiting:` + visitUserData.username);
+    // display user visited from database
+    clientSocket.on("foundUserVisited", function (result) {
+      visitUserData = result;
+      console.log(`currently visiting:` + visitUserData.username);
 
-    // display welcome home message
-    welcomeMessageString = `Welcome to ${visitUserData.username}'s pod!`;
-  });
+      // display welcome home message
+      welcomeMessageString = `Welcome to ${visitUserData.username}'s pod!`;
+    });
 
-  // if user messages found, store array of messages
-  clientSocket.on("foundUserMessages", function (messageResults) {
-    // store messages in userMessagesReceived
-    userMessagesReceived = messageResults;
-    console.log(`messages:` + messageResults);
+    // if user messages found, store array of messages
+    clientSocket.on("foundUserMessages", function (messageResults) {
+      // store messages in userMessagesReceived
+      userMessagesReceived = messageResults;
+      console.log(`messages:` + messageResults);
 
-    // set this to true so that we can create plants with this info
-    podBelongsToUser = true;
-
-    // create p5 plants by passing messages into it
-    createP5Plants();
-  });
-
-  // display plants from database
-  clientSocket.on("foundPlants", function (results) {
-    // reset visit plants data to grab new plants
-    visitPlantsData = [];
-    visitGarden = [];
-
-    for (let i = 0; i < results.length; i++) {
-      // console.log(results[i]);
-
-      // Store all plant results inside visitPlantsData array
-      visitPlantsData.push(results[i]);
-    }
-
-    // If it's not user's pod, create p5 plants
-    if (userPodX != visitPodData.x && userPodY != visitPodData.y) {
-      // you cannot view other people's messages
-      userMessagesReceived = 0;
-
-      // set this to false so that we can create plants with this info
-      podBelongsToUser = false;
+      // set this to true so that we can create plants with this info
+      podBelongsToUser = true;
 
       // create p5 plants by passing messages into it
       createP5Plants();
+    });
+
+    // display plants from database
+    clientSocket.on("foundPlants", function (results) {
+      // reset visit plants data to grab new plants
+      visitPlantsData = [];
+      visitGarden = [];
+
+      for (let i = 0; i < results.length; i++) {
+        // console.log(results[i]);
+
+        // Store all plant results inside visitPlantsData array
+        visitPlantsData.push(results[i]);
+      }
+
+      // If it's not user's pod, create p5 plants
+      if (userPodX != visitPodData.x && userPodY != visitPodData.y) {
+        // you cannot view other people's messages
+        userMessagesReceived = 0;
+
+        // set this to false so that we can create plants with this info
+        podBelongsToUser = false;
+
+        // create p5 plants by passing messages into it
+        createP5Plants();
+      }
+
+      // if this is the user's pod:
+      if (userPodX === visitPodData.x && userPodY == visitPodData.y) {
+        // check if there are messages
+        console.log(`this is user's house`);
+        clientSocket.emit("getUserMessages");
+
+        // console.log(`getting user message`);
+      }
+    }); // client socket
+
+    // Check if user is new using their pod id value:
+    if (userInfo.podId.length === 0) {
+      // user does not have a pod
+      console.log(`no greenhouse`);
+      state = `new-user`;
+    } else {
+      // user already has a greenhouse
+      console.log(`yes greenhouse`);
+      state = `pod-navigation`;
     }
-
-    // if this is the user's pod:
-    if (userPodX === visitPodData.x && userPodY == visitPodData.y) {
-      // check if there are messages
-      console.log(`this is user's house`);
-      clientSocket.emit("getUserMessages");
-
-      // console.log(`getting user message`);
-    }
-  }); // client socket
-
-  // Check if user is new using their pod id value:
-  if (userInfo.podId.length === 0) {
-    // user does not have a pod
-    console.log(`no greenhouse`);
-    state = `new-user`;
-  } else {
-    // user already has a greenhouse
-    console.log(`yes greenhouse`);
-    state = `pod-navigation`;
-  }
-}
+  } // not null
+} // end setup
 
 function createP5Plants() {
   // console.log(`creating a plant`);

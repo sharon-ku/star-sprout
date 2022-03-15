@@ -75,7 +75,7 @@ send a message to it!`;
     fill(aqua.r, aqua.g, aqua.b);
     textFont(font);
     textAlign(CENTER);
-    text(this.hoverInstructions, this.x, this.y - 110);
+    text(this.hoverInstructions, this.x, this.y - this.imageHeight / 1.5);
     pop();
   }
 
