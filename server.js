@@ -20,6 +20,10 @@ const Message = require("./message");
 //5: add the connection code:
 const mongoose = require("mongoose");
 
+//6: for encryption of password
+// for hashtag
+const bcrypt = require("bcrypt");
+
 // if (process.argv.length < 3) {
 //   console.log(
 //     "Please provide the password as an argument: node mongo.js <password>"
@@ -51,7 +55,7 @@ let express = require("express");
 // // port number, uncomment if we want to do tests:
 // const portNumber = 3000;
 
-// // UNCOMMENT IF WANT ACTUAL WEBSITE:
+// UNCOMMENT IF WANT ACTUAL WEBSITE:
 // Heroku's port number
 const portNumber = process.env.PORT || 5000;
 let app = express(); //make an insatnce of express
@@ -80,7 +84,7 @@ app.post("/registerIn", async (request, response) => {
   const body = request.body;
   console.log(body);
   const saltRounds = 10;
-  // const passwordHash = await bcrypt.hash(body.password, saltRounds);
+  const passwordHash = await bcrypt.hash(body.password, saltRounds);
 
   //is user already in?
   User.find({ username: body.username }).then((result) => {
@@ -94,7 +98,8 @@ app.post("/registerIn", async (request, response) => {
       const user = new User({
         username: body.username,
         // name: body.name,
-        passwordHash: body.password,
+        // passwordHash: body.password,
+        passwordHash: passwordHash,
       });
       //save to db
       user.save().then((result) => {
@@ -117,8 +122,22 @@ app.post("/logIn", async (request, response) => {
   //is user already in?
   User.find({ username: body.username }).then((result) => {
     if (result.length == 1) {
-      response.json(result);
-    } else {
+      // response.json(result);
+
+      // Check password is correct
+      bcrypt.compare(body.password, result[0].passwordHash).then((isValid) => {
+        console.log(isValid);
+
+        // if password is incorrect
+        if (isValid === false) {
+          response.json("WRONG INFO");
+        } else {
+          response.json(result);
+        }
+      });
+    }
+    // if username is incorrect
+    else {
       response.json("WRONG INFO");
     }
   });
