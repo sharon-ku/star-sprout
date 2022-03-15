@@ -148,6 +148,7 @@ class Greenhouse {
           y: this.y,
         });
 
+        // inside pod state
         state = `inside-pod`;
 
         // resize canvas to windowWidth and windowHeight on click
