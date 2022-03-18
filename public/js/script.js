@@ -473,7 +473,7 @@ function draw() {
     // background(teal.r, teal.g, teal.b);
     background(31, 80, 80);
 
-    // music();
+    music();
     // States setup:
     if (state === `new-user`) {
       newUser();
