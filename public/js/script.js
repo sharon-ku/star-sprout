@@ -250,21 +250,28 @@ function setup() {
 
     // Once the user's pod has been found, change its tint
     clientSocket.on("foundUserGreenhousePositions", function (result) {
-      userPodX = result.x;
-      userPodY = result.y;
+      //sabine changed .... -> user has no pod...)
+      //BUG 1
+      if (result !== null) {
+        userPodX = result.x;
+        userPodY = result.y;
 
-      console.log(`user pod positions: ${userPodX}, ${userPodY}`);
+        console.log(`user pod positions: ${userPodX}, ${userPodY}`);
 
-      // change tint color of user greenhouse
-      for (let i = 0; i < pods.length; i++) {
-        let pod = pods[i];
+        // change tint color of user greenhouse
+        for (let i = 0; i < pods.length; i++) {
+          let pod = pods[i];
 
-        // if this is the user's greenhouse
-        if (pod.x === userPodX && pod.y === userPodY) {
-          pod.setUserPodTint();
-          // set pod's taken value to true
-          pod.taken = true;
+          // if this is the user's greenhouse
+          if (pod.x === userPodX && pod.y === userPodY) {
+            pod.setUserPodTint();
+            // set pod's taken value to true
+            pod.taken = true;
+          }
         }
+      } //if result!==null ...
+      else {
+        console.log("user has no pod!");
       }
     });
 
