@@ -9,16 +9,16 @@ The user cultivates precious plants in someone else’s garden by sending them l
 
 We proposed our idea for Greenhouse Hub (later called Star Sprout):
 
-https://sharon-ku.github.io/star-sprout/proposal/
+https://sharon-ku.github.io/cart351-project/proposal/
 
 ## Stage 2: Prototype
 
 Midway through the project, we created a prototype that presented the basic user interface:
 
-https://sharon-ku.github.io/star-sprout/prototype/public/index.html
+https://sharon-ku.github.io/cart351-project/prototype/public/index.html
 
 ## Stage 3: Final
 
 We finished developing Star Sprout and implemented the messaging function! Although we can't upload the live project because we're using Node.js, here's a video of a walkthrough:
 
-https://www.youtube.com/watch?v=1SKFP78BD5k&ab_channel=sharonku
+https://www.youtube.com/watch?v=fUJqe75HGd4&t=1s&ab_channel=sharonku
